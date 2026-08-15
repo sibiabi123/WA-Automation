@@ -2,11 +2,21 @@
   {
     "name": "Good Morning",
     "to": "9345594698",
-    "message": "Good morning! Have a productive day 💪",
-    "cron": "11:05",
+    "countryCode": "91",
+    "message": "Good morning! Have a wonderful day 💪",
+    "repeatType": "daily",
+    "time": "11:45",
+    "amPm": "PM",
+    "date": "2026-08-15",
+    "daysOfWeek": [
+      1
+    ],
+    "cron": "45 23 * * *",
     "enabled": true,
-    "id": "1786815268206",
-    "createdAt": "2026-08-15T17:34:28.206Z",
-    "sentCount": 0
+    "scheduleSummary": "Every day at 11:45 PM",
+    "id": "1786817232331",
+    "createdAt": "2026-08-15T18:07:12.331Z",
+    "sentCount": 1,
+    "lastSent": "2026-08-15T18:10:00.060Z"
   }
 ]
