@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Good Morning",
+    "to": "9345594698",
+    "message": "Good morning! Have a productive day 💪",
+    "cron": "11:05",
+    "enabled": true,
+    "id": "1786815268206",
+    "createdAt": "2026-08-15T17:34:28.206Z",
+    "sentCount": 0
+  }
+]

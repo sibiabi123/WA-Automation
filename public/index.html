@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKEDit - WhatsApp Automation & Scheduler</title>
+  <meta name="description" content="Automate WhatsApp daily messages, repeat schedules, time/day customization – SKEDit Web Clone" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════ TOP NAV ═══════════════════ -->
+<header class="navbar">
+  <div class="navbar-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.38 1.26 4.8L2.05 22l5.45-1.43c1.37.74 2.92 1.16 4.54 1.16 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.16c-1.47 0-2.84-.39-4.02-1.07l-.29-.17-3.02.79.81-2.95-.19-.31c-.74-1.23-1.14-2.66-1.14-4.12 0-4.45 3.62-8.07 8.07-8.07S20.11 7.46 20.11 11.91s-3.62 8.25-8.07 8.25zm4.43-6.21c-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.54.12s-.62.79-.76.95-.28.18-.52.06c-.24-.12-1.01-.37-1.93-1.19-.71-.63-1.19-1.41-1.33-1.65-.14-.24-.01-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42s-.54-1.3-.74-1.78c-.19-.47-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.68 2.57 4.07 3.6.57.25 1.01.39 1.35.5.57.18 1.09.15 1.5.09.46-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+    </div>
+    <div>
+      <span class="brand-name">SKEDit Automation</span>
+      <span class="brand-tag">WhatsApp Scheduler</span>
+    </div>
+  </div>
+
+  <div class="nav-center" id="navStatus">
+    <div class="status-dot disconnected" id="statusDot"></div>
+    <span class="status-text" id="statusText">Connecting...</span>
+    <span class="status-phone" id="statusPhone"></span>
+  </div>
+
+  <div class="nav-actions">
+    <button class="btn btn-outline" id="btnPairDevice" onclick="openQrModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h.01M14 17h.01M17 14h.01M17 17h.01M20 14h.01M20 17h.01M20 20h.01M17 20h.01"/></svg>
+      Pair WhatsApp
+    </button>
+    <button class="btn btn-primary" onclick="openScheduleModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      + Add Schedule
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════════ DASHBOARD METRICS ═══════════════════ -->
+<main class="main-content">
+  <section class="metrics-grid" id="metricsGrid">
+    <div class="metric-card" id="metricTotal">
+      <div class="metric-icon icon-blue">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+      </div>
+      <div class="metric-data">
+        <div class="metric-value" id="mTotal">0</div>
+        <div class="metric-label">Total Schedules</div>
+      </div>
+    </div>
+    <div class="metric-card" id="metricActive">
+      <div class="metric-icon icon-green">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+      </div>
+      <div class="metric-data">
+        <div class="metric-value" id="mActive">0</div>
+        <div class="metric-label">Active Tasks</div>
+      </div>
+    </div>
+    <div class="metric-card" id="metricSent">
+      <div class="metric-icon icon-purple">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </div>
+      <div class="metric-data">
+        <div class="metric-value" id="mSent">0</div>
+        <div class="metric-label">Sent Today</div>
+      </div>
+    </div>
+    <div class="metric-card" id="metricFailed">
+      <div class="metric-icon icon-orange">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+      </div>
+      <div class="metric-data">
+        <div class="metric-value" id="mFailed">0</div>
+        <div class="metric-label">Failed Today</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SCHEDULES LIST ═══════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Scheduled Messages (SKEDit)</h2>
+        <p class="section-subtitle">Automated WhatsApp dispatches with custom time, repeat & day selection</p>
+      </div>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="setFilter('all')" id="filterAll">All</button>
+        <button class="filter-tab" onclick="setFilter('active')" id="filterActive">Active</button>
+        <button class="filter-tab" onclick="setFilter('paused')" id="filterPaused">Paused</button>
+      </div>
+    </div>
+
+    <div class="schedule-grid" id="scheduleGrid">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">📅</div>
+        <h3>No schedules yet</h3>
+        <p>Set up your first automated WhatsApp message with daily/weekly repeats & custom time.</p>
+        <button class="btn btn-primary" onclick="openScheduleModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Create SKEDit Task
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ACTIVITY LOG ═══════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Dispatch History & Logs</h2>
+        <p class="section-subtitle">Real-time status of sent & scheduled messages</p>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="loadLogs()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+        Refresh Logs
+      </button>
+    </div>
+    <div class="log-table-wrapper">
+      <table class="log-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Task Name</th>
+            <th>Recipient</th>
+            <th>Message</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="logTableBody">
+          <tr class="log-empty"><td colspan="5">No dispatch activity recorded yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!-- ══════════════════════════ QR MODAL ══════════════════════════ -->
+<div class="modal-overlay" id="qrModal" onclick="closeQrModal(event)">
+  <div class="modal glass-modal">
+    <button class="modal-close" onclick="closeQrModal()">✕</button>
+    <div class="modal-header">
+      <div class="modal-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.38 1.26 4.8L2.05 22l5.45-1.43c1.37.74 2.92 1.16 4.54 1.16 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2z"/></svg>
+      </div>
+      <h2>Pair WhatsApp Device</h2>
+      <p>Scan with WhatsApp to link your phone for automated messaging.</p>
+    </div>
+    <div class="qr-container" id="qrContainer">
+      <div class="qr-loading" id="qrLoading">
+        <div class="spinner"></div>
+        <p>Generating WhatsApp QR code...</p>
+      </div>
+      <img id="qrImage" class="qr-image hidden" alt="WhatsApp QR Code" />
+    </div>
+    <div class="qr-instructions">
+      <div class="qr-step"><span class="step-num">1</span><span>Open WhatsApp on your mobile phone</span></div>
+      <div class="qr-step"><span class="step-num">2</span><span>Tap Menu / Settings → <strong>Linked Devices → Link a Device</strong></span></div>
+      <div class="qr-step"><span class="step-num">3</span><span>Scan the QR code displayed above</span></div>
+    </div>
+    <div class="qr-success hidden" id="qrSuccess">
+      <div class="success-icon">✅</div>
+      <h3>WhatsApp Connected!</h3>
+      <p>Your WhatsApp account is active and ready to dispatch schedules.</p>
+      <button class="btn btn-primary" onclick="closeQrModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ SKEDIT SCHEDULE CREATION MODAL ══════════════════════════ -->
+<div class="modal-overlay" id="scheduleModal" onclick="closeScheduleModal(event)">
+  <div class="modal glass-modal schedule-modal">
+    <button class="modal-close" onclick="closeScheduleModal()">✕</button>
+    <div class="modal-header">
+      <h2 id="scheduleModalTitle">Add Scheduled Message</h2>
+      <p>Configure recipient, time, AM/PM, repeat rules & days</p>
+    </div>
+
+    <form class="schedule-form" id="scheduleForm" onsubmit="saveSchedule(event)">
+      <input type="hidden" id="editScheduleId" />
+
+      <!-- Schedule Name -->
+      <div class="form-group">
+        <label for="schedName">Schedule Name</label>
+        <input type="text" id="schedName" class="form-input" placeholder="e.g. Daily Morning Greeting" required />
+      </div>
+
+      <!-- Recipient Phone & Country Code -->
+      <div class="form-group">
+        <label for="schedTo">Recipient WhatsApp Number</label>
+        <div class="phone-input-group">
+          <select id="countryCode" class="form-input country-select">
+            <option value="91">🇮🇳 +91 (India)</option>
+            <option value="1">🇺🇸 +1 (USA/Canada)</option>
+            <option value="44">🇬🇧 +44 (UK)</option>
+            <option value="971">🇦🇪 +971 (UAE)</option>
+            <option value="61">🇦🇺 +61 (Australia)</option>
+            <option value="65">🇸🇬 +65 (Singapore)</option>
+            <option value="92">🇵🇰 +92 (Pakistan)</option>
+            <option value="880">🇧🇩 +880 (Bangladesh)</option>
+            <option value="977">🇳🇵 +977 (Nepal)</option>
+            <option value="">Other / Custom</option>
+          </select>
+          <input type="text" id="schedTo" class="form-input phone-number-input" placeholder="e.g. 9345594698" required />
+        </div>
+        <span class="input-hint">Type recipient's phone number. 10-digit numbers automatically get country code.</span>
+      </div>
+
+      <!-- Message Content & Quick Templates -->
+      <div class="form-group">
+        <label>Quick Message Presets</label>
+        <div class="preset-chips">
+          <button type="button" class="preset-chip" onclick="setPreset('Good morning! Have a wonderful day 💪')">☀️ Good Morning</button>
+          <button type="button" class="preset-chip" onclick="setPreset('Good night! Sweet dreams 🌙')">🌙 Good Night</button>
+          <button type="button" class="preset-chip" onclick="setPreset('⏰ Reminder: Don\'t forget your medicine!')">💊 Medicine</button>
+          <button type="button" class="preset-chip" onclick="setPreset('📊 Daily status update reminder!')">📋 Status Update</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="schedMessage">Message Content</label>
+        <textarea id="schedMessage" class="form-input form-textarea" placeholder="Type message to send automatically..." rows="3" required></textarea>
+        <div class="char-count"><span id="charCount">0</span> / 1000</div>
+      </div>
+
+      <!-- ════ SKEDIT REPEAT & TIME CONTROLS ════ -->
+      <div class="skedit-box">
+        <div class="skedit-box-title">⏰ Time & Repeat Settings</div>
+
+        <!-- Repeat Frequency Selector -->
+        <div class="form-group">
+          <label>Repeat Frequency</label>
+          <div class="repeat-chips">
+            <button type="button" class="repeat-btn active" id="repDaily" onclick="setRepeatType('daily')">🔄 Daily</button>
+            <button type="button" class="repeat-btn" id="repWeekly" onclick="setRepeatType('weekly')">📅 Weekly</button>
+            <button type="button" class="repeat-btn" id="repOnce" onclick="setRepeatType('once')">🔂 Once</button>
+            <button type="button" class="repeat-btn" id="repMonthly" onclick="setRepeatType('monthly')">📆 Monthly</button>
+            <button type="button" class="repeat-btn" id="repCustom" onclick="setRepeatType('custom_cron')">⚙️ Custom</button>
+          </div>
+        </div>
+
+        <!-- Time Picker (Hours, Minutes, AM/PM) -->
+        <div class="form-group" id="timePickerGroup">
+          <label>Dispatch Time</label>
+          <div class="time-picker-row">
+            <select id="timeHour" class="form-input time-select" onchange="updateScheduleSummary()">
+              <option value="01">01</option><option value="02">02</option><option value="03">03</option>
+              <option value="04">04</option><option value="05">05</option><option value="06">06</option>
+              <option value="07">07</option><option value="08">08</option><option value="09" selected>09</option>
+              <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+            </select>
+            <span class="time-colon">:</span>
+            <select id="timeMin" class="form-input time-select" onchange="updateScheduleSummary()">
+              <option value="00">00</option><option value="05">05</option><option value="10">10</option>
+              <option value="15">15</option><option value="20">20</option><option value="25">25</option>
+              <option value="30">30</option><option value="35">35</option><option value="40">40</option>
+              <option value="45">45</option><option value="50">50</option><option value="55">55</option>
+            </select>
+            <!-- AM / PM Toggle -->
+            <div class="ampm-toggle">
+              <button type="button" class="ampm-btn active" id="amBtn" onclick="setAmPm('AM')">AM</button>
+              <button type="button" class="ampm-btn" id="pmBtn" onclick="setAmPm('PM')">PM</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date Picker (Visible for Once / Monthly) -->
+        <div class="form-group hidden" id="dateGroup">
+          <label for="schedDate">Specific Date</label>
+          <input type="date" id="schedDate" class="form-input" onchange="updateScheduleSummary()" />
+        </div>
+
+        <!-- Days of Week Selector (Visible for Weekly) -->
+        <div class="form-group hidden" id="dowGroup">
+          <label>Days of Week</label>
+          <div class="dow-selector">
+            <button type="button" class="dow-btn active" data-day="1" onclick="toggleDow(this)">Mon</button>
+            <button type="button" class="dow-btn" data-day="2" onclick="toggleDow(this)">Tue</button>
+            <button type="button" class="dow-btn" data-day="3" onclick="toggleDow(this)">Wed</button>
+            <button type="button" class="dow-btn" data-day="4" onclick="toggleDow(this)">Thu</button>
+            <button type="button" class="dow-btn" data-day="5" onclick="toggleDow(this)">Fri</button>
+            <button type="button" class="dow-btn" data-day="6" onclick="toggleDow(this)">Sat</button>
+            <button type="button" class="dow-btn" data-day="0" onclick="toggleDow(this)">Sun</button>
+          </div>
+        </div>
+
+        <!-- Custom Cron Group (Advanced) -->
+        <div class="form-group hidden" id="customCronGroup">
+          <label for="schedCron">Cron Expression</label>
+          <input type="text" id="schedCron" class="form-input" placeholder="e.g. */5 * * * *" oninput="updateScheduleSummary()" />
+        </div>
+
+        <!-- Live Summary Banner -->
+        <div class="schedule-summary-banner" id="summaryBanner">
+          ⏰ Will send Every day at 09:00 AM
+        </div>
+      </div>
+
+      <!-- Active Switch -->
+      <div class="form-group" style="margin-top:16px;">
+        <label class="toggle-label">
+          <span>Enable Schedule</span>
+          <div class="toggle">
+            <input type="checkbox" id="schedEnabled" checked />
+            <span class="toggle-slider"></span>
+          </div>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" onclick="closeScheduleModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="saveScheduleBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Save Schedule
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
