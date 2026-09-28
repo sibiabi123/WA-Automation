@@ -3,3 +3,11 @@ auth_info/
 data/logs.json
 .env
 *.log
+.vercel
+WatoSKED-Android/
+*.apk
+aerospace_projects/
+artifact_v110/
+mudbot/
+sibiabi123/
+publish_aerospace_projects.py

@@ -10,10 +10,15 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Health check endpoint for cloud uptime monitors
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
+});
 
 // ─── API ROUTES ─────────────────────────────────────────────────────────────
 
@@ -102,8 +107,20 @@ app.get('/api/logs', (req, res) => {
 
 // ─── START ───────────────────────────────────────────────────────────────────
 
-app.listen(PORT, async () => {
+app.listen(PORT, '0.0.0.0', async () => {
   console.log(`\n🚀 SKEDit WhatsApp Automation running at http://localhost:${PORT}\n`);
+
+  // Self-ping to prevent sleep on cloud free tier (e.g. Render, Railway)
+  if (process.env.RENDER_EXTERNAL_URL) {
+    setInterval(async () => {
+      try {
+        const res = await fetch(`${process.env.RENDER_EXTERNAL_URL}/health`);
+        console.log(`💓 Cloud Keep-Alive Ping: ${res.status}`);
+      } catch (err) {
+        console.log('Keep-alive ping attempt:', err.message);
+      }
+    }, 10 * 60 * 1000); // every 10 minutes
+  }
 
   await wa.connect();
 

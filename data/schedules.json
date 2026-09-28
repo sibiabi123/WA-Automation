@@ -5,18 +5,37 @@
     "countryCode": "91",
     "message": "Good morning! Have a wonderful day 💪",
     "repeatType": "daily",
-    "time": "11:45",
+    "time": "11:50",
     "amPm": "PM",
     "date": "2026-08-15",
     "daysOfWeek": [
       1
     ],
-    "cron": "45 23 * * *",
+    "cron": "50 23 * * *",
     "enabled": true,
-    "scheduleSummary": "Every day at 11:45 PM",
-    "id": "1786817232331",
-    "createdAt": "2026-08-15T18:07:12.331Z",
+    "scheduleSummary": "Every day at 11:50 PM",
+    "id": "1786817811400",
+    "createdAt": "2026-08-15T18:16:51.400Z",
     "sentCount": 1,
-    "lastSent": "2026-08-15T18:10:00.060Z"
+    "lastSent": "2026-08-15T18:20:00.090Z"
+  },
+  {
+    "name": "hi",
+    "to": "9345594698",
+    "countryCode": "91",
+    "message": "Good morning! Have a wonderful day 💪",
+    "repeatType": "daily",
+    "time": "02:10",
+    "amPm": "AM",
+    "date": "2026-09-28",
+    "daysOfWeek": [
+      1
+    ],
+    "cron": "10 2 * * *",
+    "enabled": true,
+    "scheduleSummary": "Every day at 02:10 AM",
+    "id": "1790627925314",
+    "createdAt": "2026-09-28T20:38:45.314Z",
+    "sentCount": 0
   }
 ]
